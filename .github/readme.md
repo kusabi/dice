@@ -38,3 +38,28 @@ $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
+
+# Dice Group
+
+The `DiceGroup` can cluster multiple implementations of `DiceInterface` together, and returns the sum of results from all of them.
+
+Because one of those instances can be a `Dice`, `DiceModifier` or even another `DiceGroup` and because this object can itself by placed into a `DiceModifier` instance, the possibilities are fairly sufficient.
+
+The example below simulates how you might represent `5D12+4`.
+
+#### Example usage
+
+```php
+$dice = new DiceModifier(
+    new DiceGroup(
+        New Dice(12), 
+        New Dice(12), 
+        New Dice(12), 
+        New Dice(12), 
+        New Dice(12)
+    ), 4
+);
+$min = $dice->getMinimumRoll();
+$max = $dice->getMaximumRoll();
+$result = $dice->getRoll();
+```
