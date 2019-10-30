@@ -63,3 +63,37 @@ $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
+
+# Dice Factory
+
+The `DiceFactory` makes creating a dice implementation simpler.
+
+You can pass it the common string form of a dice instead of figuring out how to build it.
+
+#### Example usage
+
+```php
+$diceFactory = new DiceFactory();
+$dice = $diceFactory->generateDice('5d12+4');
+$min = $dice->getMinimumRoll();
+$max = $dice->getMaximumRoll();
+$result = $dice->getRoll();
+```
+
+or more simply
+
+```php
+$diceFactory = new DiceFactory();
+$result = $diceFactory->generateDice('5d12+4')->getRoll();
+```
+
+The class will throw an `/InvalidArgumentException` if it fails to parse the string so make sure you plan for that.
+
+```php
+$diceFactory = new DiceFactory();
+try {
+    $result = $diceFactory->generateDice('5d12+4')->getRoll();
+} catch(/InvalidArgumentException $exception) {
+    echo "Could not parse the string"
+}
+```
