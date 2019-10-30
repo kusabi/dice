@@ -21,3 +21,20 @@ $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
+
+# Dice Modifier
+
+The `DiceModifier` class uses the [Decorator](https://sourcemaking.com/design_patterns/decorator) pattern to augment the results of another implementation of `DiceInterface`.
+
+It takes two arguments, the first is another object that implements `DiceInterface` and the second is an integer to augment the result by.
+
+The example below simulates how you might represent `1D12+4`.
+
+#### Example usage
+
+```php
+$dice = new DiceModifier(New Dice(12), 4);
+$min = $dice->getMinimumRoll();
+$max = $dice->getMaximumRoll();
+$result = $dice->getRoll();
+```
