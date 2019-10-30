@@ -1,0 +1,41 @@
+{
+    "name": "kusabi/dice",
+    "description": "A library to represent dice",
+    "type": "library",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Christian Harvey",
+            "email": "hikusabi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "~7.2"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2",
+        "phan/phan": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpunit/phpunit": "^8.0",
+        "codacy/coverage": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kusabi\\Dice\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "analyse": "vendor/bin/phan --allow-polyfill-parser",
+        "clean": "vendor/bin/php-cs-fixer fix",
+        "test": "vendor/bin/phpunit",
+        "prepare": "composer analyse && composer clean && composer test",
+        "verify": "composer analyse && composer test"
+    }
+}
