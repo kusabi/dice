@@ -6,10 +6,33 @@
 [![Licence Badge](https://img.shields.io/github/license/kusabi/dice.svg)](https://img.shields.io/github/license/kusabi/dice.svg)
 [![Code Size](https://img.shields.io/github/languages/code-size/kusabi/dice.svg)](https://img.shields.io/github/languages/code-size/kusabi/dice.svg)
 
+# Dice library
+
 This library is designed to simulate the functionality of a dice set in a table top game
 such as Dungeons and Dragons.
 
-# Dice
+## How to install
+
+Installing the library is easy with composer.
+
+Simply run the command `composer require kusabi/dice` or add the line `"kusabi/dice": "^1.0"` to your `composer.json` file.
+
+## How to use
+
+The simplest way to use the library is by using the Dice factory class.
+
+A simple example would be
+
+```php
+$diceFactory = new DiceFactory();
+$result = $diceFactory->generateDice('5d12+4')->getRoll();
+```
+
+# Components
+
+This section will cover the various components of the library more in-depth.
+
+## Dice
 
 RPG games need a way to simulate odds of many complexities.
 
@@ -30,7 +53,7 @@ $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
 
-# Dice Modifier
+## Dice Modifier
 
 The `DiceModifier` class uses the [Decorator](https://sourcemaking.com/design_patterns/decorator) pattern to augment the results of another implementation of `DiceInterface`.
 
@@ -47,7 +70,7 @@ $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
 
-# Dice Group
+## Dice Group
 
 The `DiceGroup` can cluster multiple implementations of `DiceInterface` together, and returns the sum of results from all of them.
 
@@ -72,7 +95,7 @@ $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
 ```
 
-# Dice Factory
+## Dice Factory
 
 The `DiceFactory` makes creating a dice implementation simpler.
 
