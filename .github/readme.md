@@ -1,3 +1,11 @@
+[![Release Badge](https://img.shields.io/github/release/kusabi/dice.svg)](https://img.shields.io/github/release/kusabi/dice.svg)
+[![Tag Badge](https://img.shields.io/github/tag/kusabi/dice.svg)](https://img.shields.io/github/tag/kusabi/dice.svg)
+[![Coverage Badge](https://img.shields.io/codacy/coverage/052f13a29e4e4e92bc293d93b8dcc956.svg)](https://img.shields.io/codacy/grade/49f3e278271f44d9833e29a8b8080b45.svg)
+[![Grade Badge](https://img.shields.io/codacy/grade/052f13a29e4e4e92bc293d93b8dcc956.svg)](https://img.shields.io/codacy/grade/49f3e278271f44d9833e29a8b8080b45.svg)
+[![Issues Badge](https://img.shields.io/github/issues/kusabi/dice.svg)](https://img.shields.io/github/issues/kusabi/dice.svg)
+[![Licence Badge](https://img.shields.io/github/license/kusabi/dice.svg)](https://img.shields.io/github/license/kusabi/dice.svg)
+[![Code Size](https://img.shields.io/github/languages/code-size/kusabi/dice.svg)](https://img.shields.io/github/languages/code-size/kusabi/dice.svg)
+
 This library is designed to simulate the functionality of a dice set in a table top game
 such as Dungeons and Dragons.
 
