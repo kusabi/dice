@@ -44,24 +44,48 @@ A simple example would be
 ```php
 use Kusabi\Dice\DiceFactory;
 
-$factory = new DiceFactory();
-$result = $factory->generateDice('5d12+4')->getRoll();
+$result = DiceFactory::createFromString('5d12+4')->getRoll();
 ```
 
 
-## Using the Dice class
+## Using the dice class
 
-This library contains 3 dice implementations that when used together can simulate a huge range of possibilities.
+This library contains 4 dice implementations that when used together can simulate a huge range of possibilities.
 
-The first class is `Dice`. A `Dice` object takes a single parameter which represents the number of sides it has.
+The first class is `Dice`. 
+
+A `Dice` object can represent most basic rolls in a table-top game.
+
+It takes 3 optional parameters to set the number of sides, the multiplier and the offset.
+
+Without any parameters it will default to represent 1d6.
 
 ```php
 use Kusabi\Dice\Dice;
 
-$dice = new Dice(4);
+$dice = new Dice(12, 2, 5);
 $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
+
+$string = (string) $dice; // 2d12+5
+```
+
+## Using the single dice class
+
+The other three dice classes can be used in combination, to create much more complex dice setups.
+
+The first of these is `SingleDice`. A `SingleDice` object takes a single parameter which represents the number of sides it has.
+
+```php
+use Kusabi\Dice\SingleDice;
+
+$dice = new SingleDice(4);
+$min = $dice->getMinimumRoll();
+$max = $dice->getMaximumRoll();
+$result = $dice->getRoll();
+
+$string = (string) $dice; // 1d4
 ```
 
 ## Using the dice modifier class
@@ -73,10 +97,10 @@ It takes two arguments, the first is another object that implements `DiceInterfa
 The example below simulates how you might represent `1D12+4`.
 
 ```php
-use Kusabi\Dice\Dice;
+use Kusabi\Dice\SingleDice;
 use Kusabi\Dice\DiceModifier;
 
-$dice = new DiceModifier(New Dice(12), 4);
+$dice = new DiceModifier(New SingleDice(12), 4);
 $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
@@ -86,7 +110,7 @@ $result = $dice->getRoll();
 
 The `DiceGroup` can cluster multiple implementations of `DiceInterface` together, and returns the sum of results from all of them.
 
-Because one of those instances can be a `Dice`, `DiceModifier` or even another `DiceGroup` and because this object can itself by placed into a `DiceModifier` instance, the possibilities are fairly sufficient.
+Because one of those instances can be a `Dice`, `SingleDice`, `DiceModifier` or even another `DiceGroup` and because this object can itself by placed into a `DiceModifier` instance, the possibilities are fairly sufficient.
 
 The example below simulates how you might represent `5D12+4`.
 
@@ -94,14 +118,15 @@ The example below simulates how you might represent `5D12+4`.
 use Kusabi\Dice\Dice;
 use Kusabi\Dice\DiceModifier;
 use Kusabi\Dice\DiceGroup;
+use Kusabi\Dice\SingleDice;
 
 $dice = new DiceModifier(
     new DiceGroup(
-        New Dice(12), 
-        New Dice(12), 
-        New Dice(12), 
-        New Dice(12), 
-        New Dice(12)
+        new SingleDice(12), 
+        new SingleDice(12), 
+        new SingleDice(12), 
+        new Dice(12), 
+        new Dice(12)
     ), 4
 );
 $min = $dice->getMinimumRoll();
@@ -111,15 +136,14 @@ $result = $dice->getRoll();
 
 ## Using the dice factory
 
-The `DiceFactory` makes creating a dice implementation simpler.
+The `DiceFactory` makes creating a die implementation simpler.
 
-You can pass it the common string form of a dice instead of figuring out how to build it.
+You can pass it the common string form of a die instead of figuring out how to build it.
 
 ```php
 use Kusabi\Dice\DiceFactory;
 
-$factory = new DiceFactory();
-$dice = $factory->generateDice('5d12+4');
+$dice = DiceFactory::createFromString('5d12+4');
 $min = $dice->getMinimumRoll();
 $max = $dice->getMaximumRoll();
 $result = $dice->getRoll();
@@ -130,8 +154,7 @@ or more simply
 ```php
 use Kusabi\Dice\DiceFactory;
 
-$factory = new DiceFactory();
-$result = $factory->generateDice('5d12+4')->getRoll();
+$result = DiceFactory::createFromString('5d12+4')->getRoll();
 ```
 
 The class will throw an `/InvalidArgumentException` if it fails to parse the string so make sure you plan for that.
@@ -139,9 +162,8 @@ The class will throw an `/InvalidArgumentException` if it fails to parse the str
 ```php
 use Kusabi\Dice\DiceFactory;
 
-$factory = new DiceFactory();
 try {
-    $result = $factory->generateDice('5d12+4')->getRoll();
+    $result = DiceFactory::createFromString('5d12+4')->getRoll();
 } catch(\InvalidArgumentException $exception) {
     echo "Could not parse the string";
 }

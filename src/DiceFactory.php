@@ -5,30 +5,12 @@ namespace Kusabi\Dice;
 use InvalidArgumentException;
 
 /**
- * A common dice factory capable of creating a dice setup form a standard Dungeons and Dragons textual representation of dice
- *
- * @author Christian Harvey <hikusabi@gmail.com>
+ * A factory capable of creating a dice setup from a standard Dungeons and Dragons textual representation of dice
  *
  * @see DiceFactoryInterface
  */
-class DiceFactory implements DiceFactoryInterface
+class DiceFactory
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @throws InvalidArgumentException if input could not be parsed properly
-     */
-    public function generateDice($input)
-    {
-        // String input?
-        if (is_string($input)) {
-            return $this->generateFromString($input);
-        }
-
-        // Could not parse the input
-        throw new InvalidArgumentException('Input format is not supported');
-    }
-
     /**
      * Generate a new Dice implementation from a string
      * The format expected is the DnD5e standard. (4d12+7)
@@ -39,11 +21,10 @@ class DiceFactory implements DiceFactoryInterface
      *
      * @return DiceInterface
      */
-    protected function generateFromString($input)
+    public static function createFromString($input)
     {
         // Valid string match?
         if (preg_match('/^([0-9]+)?d([0-9]+) ?\+? ?([0-9]+)?$/', $input, $matches)) {
-
             // Get the multiplier
             $multiplier = isset($matches[1]) ? $matches[1] : 1;
             $multiplier = (int) ($multiplier !== '' ? $multiplier : 1);
@@ -67,7 +48,7 @@ class DiceFactory implements DiceFactoryInterface
             $modifier = (int) ($modifier !== '' ? $modifier : 0);
 
             // generate the dice setup from the parts
-            return $this->generateFromValues($multiplier, $sides, $modifier);
+            return static::createFromValues($multiplier, $sides, $modifier);
         }
 
         // Throw an exception
@@ -83,10 +64,10 @@ class DiceFactory implements DiceFactoryInterface
      *
      * @return DiceInterface
      */
-    protected function generateFromValues($multiplier, $sides, $modifier)
+    public static function createFromValues($multiplier, $sides, $modifier)
     {
         // Generate the base dice
-        $base = new Dice($sides);
+        $base = new SingleDice($sides);
 
         // Add a multiplier?
         if ($multiplier > 1) {

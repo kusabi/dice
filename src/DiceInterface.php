@@ -12,18 +12,18 @@ namespace Kusabi\Dice;
 interface DiceInterface
 {
     /**
-     * Get the smallest possible outcome of rolling this dice
-     *
-     * @return int
-     */
-    public function getMinimumRoll();
-
-    /**
      * Get the largest possible outcome of rolling this dice
      *
      * @return int
      */
     public function getMaximumRoll();
+
+    /**
+     * Get the smallest possible outcome of rolling this dice
+     *
+     * @return int
+     */
+    public function getMinimumRoll();
 
     /**
      * Roll the dice and return the value

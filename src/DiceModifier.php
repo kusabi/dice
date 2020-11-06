@@ -5,8 +5,6 @@ namespace Kusabi\Dice;
 /**
  * A dice modifier simply adds a modifier to the results of another DiceInterface
  *
- * @author Christian Harvey <hikusabi@gmail.com>
- *
  * @see DiceInterface
  */
 class DiceModifier implements DiceInterface
@@ -38,6 +36,25 @@ class DiceModifier implements DiceInterface
     }
 
     /**
+     * Convert the dice to a string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $base = (string) $this->dice;
+        $modifier = $this->modifier;
+        if (strpos($base, ', ') !== false) {
+            $base = "({$base})";
+        }
+        if (preg_match('/(.*?)\+(\d+)$/', $base, $matches)) {
+            $modifier = $this->modifier + $matches[2];
+            $base = $matches[1];
+        }
+        return $base.'+'.$modifier;
+    }
+
+    /**
      * Get the dice being modified
      *
      * @return DiceInterface
@@ -61,6 +78,30 @@ class DiceModifier implements DiceInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * Augments result by the modifier
+     *
+     * @see DiceInterface::getMaximumRoll()
+     */
+    public function getMaximumRoll()
+    {
+        return $this->getDice()->getMaximumRoll() + $this->getModifier();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Augments result by the modifier
+     *
+     * @see DiceInterface::getMinimumRoll()
+     */
+    public function getMinimumRoll()
+    {
+        return $this->getDice()->getMinimumRoll() + $this->getModifier();
+    }
+
+    /**
      * Get the amount to modifying results by
      *
      * @return int
@@ -79,32 +120,8 @@ class DiceModifier implements DiceInterface
      */
     public function setModifier($modifier)
     {
-        $this->modifier = $modifier;
+        $this->modifier = (int) $modifier;
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Augments result by the modifier
-     *
-     * @see DiceInterface::getMinimumRoll()
-     */
-    public function getMinimumRoll()
-    {
-        return $this->getDice()->getMinimumRoll() + $this->getModifier();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Augments result by the modifier
-     *
-     * @see DiceInterface::getMaximumRoll()
-     */
-    public function getMaximumRoll()
-    {
-        return $this->getDice()->getMaximumRoll() + $this->getModifier();
     }
 
     /**

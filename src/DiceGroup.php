@@ -13,8 +13,6 @@ use IteratorAggregate;
  *
  * It can be used to represent things like 2D6
  *
- * @author Christian Harvey <hikusabi@gmail.com>
- *
  * @see DiceInterface
  */
 class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterface
@@ -22,7 +20,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     /**
      * The dice in this group
      *
-     * @var array
+     * @var DiceInterface[]
      */
     protected $dice;
 
@@ -37,9 +35,74 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     }
 
     /**
+     * Convert the dice to a string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        $items = array_map(function (DiceInterface $dice) {
+            return (string) $dice;
+        }, $this->dice);
+
+        $grouped = [];
+        foreach ($items as $item) {
+            foreach (explode(', ', $item) as $entry) {
+                if (preg_match('/^(\d+)d(\d+)\+?(\d+)?$/', $entry, $matches)) {
+                    $quantity = isset($matches[1]) ? $matches[1] : 1;
+                    $sides = isset($matches[2]) ? $matches[2] : 1;
+                    $modifier = isset($matches[3]) ? $matches[3] : 0;
+                    if (!isset($grouped[$sides])) {
+                        $grouped[$sides] = [
+                            'quantity' => 0,
+                            'modifier' => 0,
+                            'sides' => $sides,
+                        ];
+                    }
+                    $grouped[$sides]['quantity'] += $quantity;
+                    $grouped[$sides]['modifier'] += $modifier;
+                }
+            }
+        }
+
+        $collection = array_map(function ($group) {
+            $value = "{$group['quantity']}d{$group['sides']}";
+            if ($group['modifier'] > 0) {
+                $value .= "+{$group['modifier']}";
+            }
+            return $value;
+        }, $grouped);
+
+        return implode(', ', $collection);
+    }
+
+    /**
+     * Add dice to the group
+     *
+     * @param DiceInterface ...$dice
+     *
+     * @return self
+     */
+    public function addDice(DiceInterface ...$dice)
+    {
+        $this->dice = array_merge($this->dice, $dice);
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Countable::count()
+     */
+    public function count()
+    {
+        return count($this->dice);
+    }
+
+    /**
      * Get the dice in this group
      *
-     * @return array
+     * @return DiceInterface[]
      */
     public function getDice()
     {
@@ -60,30 +123,13 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     }
 
     /**
-     * Add dice to the group
-     *
-     * @param DiceInterface ...$dice
-     *
-     * @return self
-     */
-    public function addDice(DiceInterface ...$dice)
-    {
-        $this->dice = array_merge($this->dice, $dice);
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      *
-     * Get the sum of minimums from the whole group
-     *
-     * @see DiceInterface::getRoll()
+     * @see IteratorAggregate::getIterator()
      */
-    public function getMinimumRoll()
+    public function getIterator()
     {
-        return array_sum(array_map(function (DiceInterface $dice) {
-            return $dice->getMinimumRoll();
-        }, $this->getDice()));
+        return new ArrayIterator($this->dice);
     }
 
     /**
@@ -97,6 +143,20 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     {
         return array_sum(array_map(function (DiceInterface $dice) {
             return $dice->getMaximumRoll();
+        }, $this->getDice()));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Get the sum of minimums from the whole group
+     *
+     * @see DiceInterface::getRoll()
+     */
+    public function getMinimumRoll()
+    {
+        return array_sum(array_map(function (DiceInterface $dice) {
+            return $dice->getMinimumRoll();
         }, $this->getDice()));
     }
 
@@ -139,9 +199,10 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     /**
      * {@inheritdoc}
      *
+     * @throws InvalidArgumentException if value does not implement DiceInterface
+     *
      * @see ArrayAccess::offsetSet()
      *
-     * @throws InvalidArgumentException if value does not implement DiceInterface
      */
     public function offsetSet($offset, $value)
     {
@@ -159,25 +220,5 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
     public function offsetUnset($offset)
     {
         unset($this->dice[$offset]);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see Countable::count()
-     */
-    public function count()
-    {
-        return count($this->dice);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see IteratorAggregate::getIterator()
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->dice);
     }
 }
