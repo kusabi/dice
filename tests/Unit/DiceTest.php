@@ -1,6 +1,6 @@
 <?php
 
-namespace Kusabi\Tests;
+namespace Kusabi\Dice\Tests\Unit;
 
 use Kusabi\Dice\Dice;
 use Kusabi\Dice\DiceInterface;
