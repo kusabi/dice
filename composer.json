@@ -1,25 +1,23 @@
 {
     "name": "kusabi/dice",
-    "description": "A library to represent dice",
+    "description": "A table top dice library for PHP",
     "type": "library",
-    "license": "mit",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Christian Harvey",
             "email": "hikusabi@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
-        "php": "~7.2"
+        "php": ">=5.6"
     },
     "require-dev": {
-        "symfony/var-dumper": "^4.2",
-        "phan/phan": "^1.2",
-        "friendsofphp/php-cs-fixer": "^2.14",
-        "phpunit/phpunit": "^8.0",
-        "codacy/coverage": "^1.4"
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpunit/phpunit": "^5.7",
+        "symfony/var-dumper": "^3.4"
     },
     "autoload": {
         "psr-4": {
@@ -28,15 +26,18 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Kusabi\\Dice\\Tests\\": "tests/"
         }
     },
-    "scripts": {
-        "analyse": "vendor/bin/phan --allow-polyfill-parser",
-        "clean": "vendor/bin/php-cs-fixer fix",
-        "test": "vendor/bin/phpunit",
-        "prepare": "composer analyse && composer clean && composer test",
-        "verify": "composer analyse && composer test",
-        "publish": "vendor/bin/codacycoverage clover build/coverage/clover.xml"
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform": {
+            "php": "5.6"
+        },
+        "platform-dev": {
+            "php": "5.6"
+        }
     }
 }

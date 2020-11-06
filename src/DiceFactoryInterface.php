@@ -16,5 +16,5 @@ interface DiceFactoryInterface
      *
      * @return DiceInterface
      */
-    public function generateDice($input): DiceInterface;
+    public function generateDice($input);
 }

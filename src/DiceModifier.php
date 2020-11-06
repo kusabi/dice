@@ -31,7 +31,7 @@ class DiceModifier implements DiceInterface
      * @param DiceInterface $dice
      * @param int $modifier
      */
-    public function __construct(DiceInterface $dice, int $modifier)
+    public function __construct(DiceInterface $dice, $modifier)
     {
         $this->setDice($dice);
         $this->setModifier($modifier);
@@ -42,7 +42,7 @@ class DiceModifier implements DiceInterface
      *
      * @return DiceInterface
      */
-    public function getDice(): DiceInterface
+    public function getDice()
     {
         return $this->dice;
     }
@@ -54,7 +54,7 @@ class DiceModifier implements DiceInterface
      *
      * @return self
      */
-    public function setDice(DiceInterface $dice): self
+    public function setDice(DiceInterface $dice)
     {
         $this->dice = $dice;
         return $this;
@@ -65,7 +65,7 @@ class DiceModifier implements DiceInterface
      *
      * @return int
      */
-    public function getModifier(): int
+    public function getModifier()
     {
         return $this->modifier;
     }
@@ -77,7 +77,7 @@ class DiceModifier implements DiceInterface
      *
      * @return self
      */
-    public function setModifier(int $modifier): self
+    public function setModifier($modifier)
     {
         $this->modifier = $modifier;
         return $this;
@@ -90,7 +90,7 @@ class DiceModifier implements DiceInterface
      *
      * @see DiceInterface::getMinimumRoll()
      */
-    public function getMinimumRoll(): int
+    public function getMinimumRoll()
     {
         return $this->getDice()->getMinimumRoll() + $this->getModifier();
     }
@@ -102,7 +102,7 @@ class DiceModifier implements DiceInterface
      *
      * @see DiceInterface::getMaximumRoll()
      */
-    public function getMaximumRoll(): int
+    public function getMaximumRoll()
     {
         return $this->getDice()->getMaximumRoll() + $this->getModifier();
     }
@@ -114,7 +114,7 @@ class DiceModifier implements DiceInterface
      *
      * @see DiceInterface::getRoll()
      */
-    public function getRoll(): int
+    public function getRoll()
     {
         return $this->getDice()->getRoll() + $this->getModifier();
     }

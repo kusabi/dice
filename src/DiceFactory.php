@@ -16,9 +16,9 @@ class DiceFactory implements DiceFactoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException if input could not be parsed properly
+     * @throws InvalidArgumentException if input could not be parsed properly
      */
-    public function generateDice($input): DiceInterface
+    public function generateDice($input)
     {
         // String input?
         if (is_string($input)) {
@@ -26,7 +26,7 @@ class DiceFactory implements DiceFactoryInterface
         }
 
         // Could not parse the input
-        throw new \InvalidArgumentException('Input format is not supported');
+        throw new InvalidArgumentException('Input format is not supported');
     }
 
     /**
@@ -35,17 +35,17 @@ class DiceFactory implements DiceFactoryInterface
      *
      * @param string $input
      *
-     * @throws \InvalidArgumentException if input could not be parsed properly
+     * @throws InvalidArgumentException if input could not be parsed properly
      *
      * @return DiceInterface
      */
-    protected function generateFromString(string $input): DiceInterface
+    protected function generateFromString($input)
     {
         // Valid string match?
         if (preg_match('/^([0-9]+)?d([0-9]+) ?\+? ?([0-9]+)?$/', $input, $matches)) {
 
             // Get the multiplier
-            $multiplier = $matches[1] ?? 1;
+            $multiplier = isset($matches[1]) ? $matches[1] : 1;
             $multiplier = (int) ($multiplier !== '' ? $multiplier : 1);
 
             // Multiplier too small?
@@ -54,7 +54,7 @@ class DiceFactory implements DiceFactoryInterface
             }
 
             // Get the number of sides
-            $sides = $matches[2] ?? 0;
+            $sides = isset($matches[2]) ? $matches[2] : 0;
             $sides = (int) ($sides !== '' ? $sides : 0);
 
             // Too few sides?
@@ -63,7 +63,7 @@ class DiceFactory implements DiceFactoryInterface
             }
 
             // Get the size of the modifier
-            $modifier = $matches[3] ?? 0;
+            $modifier = isset($matches[3]) ? $matches[3] : 0;
             $modifier = (int) ($modifier !== '' ? $modifier : 0);
 
             // generate the dice setup from the parts
@@ -83,7 +83,7 @@ class DiceFactory implements DiceFactoryInterface
      *
      * @return DiceInterface
      */
-    protected function generateFromValues(int $multiplier, int $sides, int $modifier): DiceInterface
+    protected function generateFromValues($multiplier, $sides, $modifier)
     {
         // Generate the base dice
         $base = new Dice($sides);

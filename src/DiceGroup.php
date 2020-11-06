@@ -41,7 +41,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @return array
      */
-    public function getDice(): array
+    public function getDice()
     {
         return $this->dice;
     }
@@ -53,7 +53,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @return self
      */
-    public function setDice(DiceInterface ...$dice): self
+    public function setDice(DiceInterface ...$dice)
     {
         $this->dice = $dice;
         return $this;
@@ -66,7 +66,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @return self
      */
-    public function addDice(DiceInterface ...$dice): self
+    public function addDice(DiceInterface ...$dice)
     {
         $this->dice = array_merge($this->dice, $dice);
         return $this;
@@ -79,7 +79,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @see DiceInterface::getRoll()
      */
-    public function getMinimumRoll(): int
+    public function getMinimumRoll()
     {
         return array_sum(array_map(function (DiceInterface $dice) {
             return $dice->getMinimumRoll();
@@ -93,7 +93,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @see DiceInterface::getRoll()
      */
-    public function getMaximumRoll(): int
+    public function getMaximumRoll()
     {
         return array_sum(array_map(function (DiceInterface $dice) {
             return $dice->getMaximumRoll();
@@ -107,7 +107,7 @@ class DiceGroup implements ArrayAccess, Countable, IteratorAggregate, DiceInterf
      *
      * @see DiceInterface::getRoll()
      */
-    public function getRoll(): int
+    public function getRoll()
     {
         return array_sum(array_map(function (DiceInterface $dice) {
             return $dice->getRoll();

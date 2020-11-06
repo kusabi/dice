@@ -25,7 +25,7 @@ class Dice implements DiceInterface
      *
      * @param int $sides
      */
-    public function __construct(int $sides)
+    public function __construct($sides)
     {
         $this->setSides($sides);
     }
@@ -35,7 +35,7 @@ class Dice implements DiceInterface
      *
      * @return int
      */
-    public function getSides(): int
+    public function getSides()
     {
         return $this->sides;
     }
@@ -47,7 +47,7 @@ class Dice implements DiceInterface
      *
      * @return self
      */
-    public function setSides(int $sides): self
+    public function setSides($sides)
     {
         $this->sides = $sides;
         return $this;
@@ -58,7 +58,7 @@ class Dice implements DiceInterface
      *
      * @see DiceInterface::getMinimumRoll()
      */
-    public function getMinimumRoll(): int
+    public function getMinimumRoll()
     {
         return 1;
     }
@@ -68,7 +68,7 @@ class Dice implements DiceInterface
      *
      * @see DiceInterface::getMaximumRoll()
      */
-    public function getMaximumRoll(): int
+    public function getMaximumRoll()
     {
         return $this->getSides();
     }
@@ -78,7 +78,7 @@ class Dice implements DiceInterface
      *
      * @see DiceInterface::getRoll()
      */
-    public function getRoll(): int
+    public function getRoll()
     {
         return mt_rand($this->getMinimumRoll(), $this->getMaximumRoll());
     }

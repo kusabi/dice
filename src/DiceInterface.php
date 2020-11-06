@@ -16,19 +16,19 @@ interface DiceInterface
      *
      * @return int
      */
-    public function getMinimumRoll(): int;
+    public function getMinimumRoll();
 
     /**
      * Get the largest possible outcome of rolling this dice
      *
      * @return int
      */
-    public function getMaximumRoll(): int;
+    public function getMaximumRoll();
 
     /**
      * Roll the dice and return the value
      *
      * @return int
      */
-    public function getRoll(): int;
+    public function getRoll();
 }
